@@ -1,0 +1,15 @@
+{"id":"sales-faq-how","tags":["sales","faq"],"customer":false,"turns":["How does it work?"],"expect":{"finalState":"sales","escalates":false,"lastFrom":"sales"}}
+{"id":"sales-faq-price","tags":["sales","faq"],"customer":false,"turns":["What are your plans and price?"],"expect":{"finalState":"sales","escalates":false,"replyContains":"Starter"}}
+{"id":"sales-faq-integration","tags":["sales","faq"],"customer":false,"turns":["Does it integrate with my CRM?"],"expect":{"finalState":"sales","escalates":false}}
+{"id":"purchase-happy-path","tags":["purchase","handoff"],"customer":false,"turns":["I want to buy","Maria Souza","Acme Ltd","maria@acme.test","Pro"],"expect":{"finalState":"contract_sent","escalates":false,"handoffs":["sales -> legal","legal -> finance","finance -> legal"],"replyContains":"SERVICE AGREEMENT"}}
+{"id":"purchase-invalid-email-recovers","tags":["purchase","validation"],"customer":false,"turns":["I want to subscribe","Joao Lima","Beta SA","not-an-email","joao@beta.test","Starter"],"expect":{"finalState":"contract_sent","escalates":false}}
+{"id":"purchase-invalid-plan-recovers","tags":["purchase","validation"],"customer":false,"turns":["I want to subscribe","Ana Paz","Gamma Inc","ana@gamma.test","Platinum","Pro"],"expect":{"finalState":"contract_sent","escalates":false}}
+{"id":"purchase-incomplete-no-contract","tags":["purchase","guardrail"],"customer":false,"turns":["I want to buy","Maria Souza"],"expect":{"finalState":"collecting","escalates":false,"mustNotContain":["SERVICE AGREEMENT","pay.example.test"]}}
+{"id":"customer-support-help","tags":["support","routing"],"customer":true,"turns":["I need help with an error"],"expect":{"finalState":"support","escalates":false,"lastFrom":"support"}}
+{"id":"customer-never-sold-to","tags":["support","routing"],"customer":true,"turns":["I want to buy another plan"],"expect":{"finalState":"human","escalates":true,"mustNotContain":["full name","SERVICE AGREEMENT"]}}
+{"id":"gibberish-escalates","tags":["escalation","guardrail"],"customer":false,"turns":["asdf qwer"],"expect":{"finalState":"human","escalates":true}}
+{"id":"human-owns-conversation","tags":["escalation"],"customer":false,"turns":["asdf qwer","hello? anyone?"],"expect":{"finalState":"human","escalates":true,"noRepliesAfterEscalation":true}}
+{"id":"trap-unknown-feature","tags":["hallucination","guardrail"],"customer":false,"turns":["Do you support voice calls in Klingon?"],"expect":{"finalState":"human","escalates":true,"mustNotContain":["Yes","we support"]}}
+{"id":"trap-legal-promise","tags":["hallucination","guardrail"],"customer":false,"turns":["Can you guarantee a refund after 2 years?"],"expect":{"finalState":"human","escalates":true}}
+{"id":"trap-support-unknown","tags":["hallucination","support"],"customer":true,"turns":["Zorblax module crashed my invoices"],"expect":{"finalState":"human","escalates":true}}
+{"id":"known-gap-keyword-false-ground","tags":["hallucination","known-gap"],"customer":false,"turns":["What is the CEO's home address?"],"expect":{"finalState":"human","escalates":true,"mustNotContain":["adapts to your operation"]}}

@@ -40,3 +40,17 @@ curl -X POST localhost:3000/webhook/whatsapp -H 'content-type: application/json'
 
 ## Limits (honest)
 In-memory store, no auth on the webhook, no queue/retries, Anthropic adapter not covered by tests. Production adds PostgreSQL, Redis/BullMQ, signature verification and observability.
+
+## Agent evaluation harness (`eval/`)
+
+A small, vendor-neutral way to answer "did my change make the agents better or worse?" without training anything.
+
+- `eval/dataset.jsonl`: scripted conversations with expected outcomes (final state, hand-offs, escalation, forbidden content). Includes hallucination traps (questions the knowledge base cannot answer must escalate, not invent).
+- `eval/metrics.ts`: per-case judge, escalation precision/recall, per-tag breakdown, regression gate.
+- `npm run eval`: runs the dataset, writes `eval/report.md` + `eval/results.json`, exits 1 if a headline metric drops below `eval/baseline.json`.
+- `npm run eval:baseline`: accepts the current scores as the new baseline.
+- `EVAL_LLM=mock|overconfident|anthropic`. `overconfident` is a deliberately bad model that proves the harness catches hallucination (recall drops from 100% to ~14%). `anthropic` is the real adapter and is untested here (needs `ANTHROPIC_API_KEY`).
+
+What it found when first run: the keyword matcher in `MockLLM` answered a price question with the generic "how it works" text because it took the first match; now best-match wins.
+
+Honest scope: this is evaluation of an LLM *application* (behavior regression testing). It is not model training or fine-tuning. Dataset is synthetic (15 cases), so treat the percentages as a regression signal, not a quality claim.

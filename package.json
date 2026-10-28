@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "tsx src/server.ts",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "eval": "tsx eval/run.ts",
+    "eval:baseline": "tsx eval/run.ts --update-baseline"
   },
   "dependencies": {
     "fastify": "^4.28.1"

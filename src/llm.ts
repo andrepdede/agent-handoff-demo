@@ -12,7 +12,7 @@ export interface LLM {
 }
 
 const KNOWLEDGE: { keys: string[]; answer: string }[] = [
-  { keys: ['what', 'how does', 'work'], answer: 'The platform adapts to your operation: AI agents answer customers, schedule and hand work to the right team.' },
+  { keys: ['how does', 'work'], answer: 'The platform adapts to your operation: AI agents answer customers, schedule and hand work to the right team.' },
   { keys: ['plan', 'price', 'cost'], answer: 'We offer Starter and Pro plans. Final pricing is confirmed in the contract.' },
   { keys: ['integrat', 'whatsapp', 'crm'], answer: 'It connects to WhatsApp and to your CRM through APIs.' },
   { keys: ['reset', 'password', 'error', 'help'], answer: 'I can help with that. Please describe what you see on screen.' },
@@ -25,9 +25,13 @@ export class MockLLM implements LLM {
     if (/(buy|purchase|subscribe|sign up|contract|i want to hire|acquire)/.test(t)) {
       return { intent: 'purchase', confidence: 0.95 };
     }
+    // Best match wins (most keywords hit), not first match: found by the eval harness (price question hit the generic entry).
+    let best: { score: number; answer: string } | null = null;
     for (const k of KNOWLEDGE) {
-      if (k.keys.some((w) => t.includes(w))) return { intent: 'question', confidence: 0.8, answer: k.answer };
+      const score = k.keys.filter((w) => t.includes(w)).length;
+      if (score > 0 && (!best || score > best.score)) best = { score, answer: k.answer };
     }
+    if (best) return { intent: 'question', confidence: 0.8, answer: best.answer };
     return { intent: 'other', confidence: 0.2 };
   }
 }

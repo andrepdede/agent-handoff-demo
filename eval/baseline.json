@@ -1,0 +1,53 @@
+{
+  "total": 15,
+  "passed": 15,
+  "passRate": 1,
+  "escalationPrecision": 1,
+  "escalationRecall": 1,
+  "byTag": {
+    "sales": {
+      "total": 3,
+      "passed": 3
+    },
+    "faq": {
+      "total": 3,
+      "passed": 3
+    },
+    "purchase": {
+      "total": 4,
+      "passed": 4
+    },
+    "handoff": {
+      "total": 1,
+      "passed": 1
+    },
+    "validation": {
+      "total": 2,
+      "passed": 2
+    },
+    "guardrail": {
+      "total": 4,
+      "passed": 4
+    },
+    "support": {
+      "total": 3,
+      "passed": 3
+    },
+    "routing": {
+      "total": 2,
+      "passed": 2
+    },
+    "escalation": {
+      "total": 2,
+      "passed": 2
+    },
+    "hallucination": {
+      "total": 4,
+      "passed": 4
+    },
+    "known-gap": {
+      "total": 1,
+      "passed": 1
+    }
+  }
+}
